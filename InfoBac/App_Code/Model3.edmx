@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DatabaseModel2.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="DatabaseModel2StoreContainer">
+          <EntitySet Name="Domains" EntityType="DatabaseModel2.Store.Domains" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DomainsWeights" EntityType="DatabaseModel2.Store.DomainsWeights" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Questions" EntityType="DatabaseModel2.Store.Questions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="QuestionsWeights" EntityType="DatabaseModel2.Store.QuestionsWeights" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="DatabaseModel2.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Domains_ToTable" Association="DatabaseModel2.Store.FK_Domains_ToTable">
+            <End Role="Domains" EntitySet="Domains" />
+            <End Role="Domains1" EntitySet="Domains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DomainsWeights_ToTable" Association="DatabaseModel2.Store.FK_DomainsWeights_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DomainsWeights" EntitySet="DomainsWeights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DomainsWeights_ToTable_1" Association="DatabaseModel2.Store.FK_DomainsWeights_ToTable_1">
+            <End Role="Domains" EntitySet="Domains" />
+            <End Role="DomainsWeights" EntitySet="DomainsWeights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_ToTable" Association="DatabaseModel2.Store.FK_Questions_ToTable">
+            <End Role="Domains" EntitySet="Domains" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionsWeights_ToTable" Association="DatabaseModel2.Store.FK_QuestionsWeights_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="QuestionsWeights" EntitySet="QuestionsWeights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionsWeights_ToTable_1" Association="DatabaseModel2.Store.FK_QuestionsWeights_ToTable_1">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="QuestionsWeights" EntitySet="QuestionsWeights" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Domains">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" Nullable="false" MaxLength="50" />
+          <Property Name="MasterDomain" Type="int" />
+        </EntityType>
+        <EntityType Name="DomainsWeights">
+          <Key>
+            <PropertyRef Name="User" />
+            <PropertyRef Name="Domain" />
+          </Key>
+          <Property Name="User" Type="int" Nullable="false" />
+          <Property Name="Domain" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="real" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Question" Type="nchar" Nullable="false" MaxLength="100" />
+          <Property Name="Answer" Type="nchar" Nullable="false" MaxLength="20" />
+          <Property Name="Domain" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestionsWeights">
+          <Key>
+            <PropertyRef Name="User" />
+            <PropertyRef Name="Question" />
+          </Key>
+          <Property Name="User" Type="int" Nullable="false" />
+          <Property Name="Question" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="real" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nchar" Nullable="false" MaxLength="50" />
+          <Property Name="Email" Type="nchar" Nullable="false" MaxLength="50" />
+          <Property Name="Passwrod" Type="nchar" Nullable="false" MaxLength="50" />
+          <Property Name="Admin" Type="bit" Nullable="false" />
+          <Property Name="Confirmed" Type="nchar" Nullable="false" MaxLength="10" />
+          <Property Name="Note" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Domains_ToTable">
+          <End Role="Domains" Type="DatabaseModel2.Store.Domains" Multiplicity="0..1" />
+          <End Role="Domains1" Type="DatabaseModel2.Store.Domains" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Domains1">
+              <PropertyRef Name="MasterDomain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DomainsWeights_ToTable">
+          <End Role="Users" Type="DatabaseModel2.Store.Users" Multiplicity="1" />
+          <End Role="DomainsWeights" Type="DatabaseModel2.Store.DomainsWeights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DomainsWeights">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DomainsWeights_ToTable_1">
+          <End Role="Domains" Type="DatabaseModel2.Store.Domains" Multiplicity="1" />
+          <End Role="DomainsWeights" Type="DatabaseModel2.Store.DomainsWeights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DomainsWeights">
+              <PropertyRef Name="Domain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_ToTable">
+          <End Role="Domains" Type="DatabaseModel2.Store.Domains" Multiplicity="1" />
+          <End Role="Questions" Type="DatabaseModel2.Store.Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="Domain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionsWeights_ToTable">
+          <End Role="Users" Type="DatabaseModel2.Store.Users" Multiplicity="1" />
+          <End Role="QuestionsWeights" Type="DatabaseModel2.Store.QuestionsWeights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionsWeights">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionsWeights_ToTable_1">
+          <End Role="Questions" Type="DatabaseModel2.Store.Questions" Multiplicity="1" />
+          <End Role="QuestionsWeights" Type="DatabaseModel2.Store.QuestionsWeights" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionsWeights">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DatabaseModel2" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DatabaseEntities2" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Domains" EntityType="DatabaseModel2.Domain" />
+          <EntitySet Name="DomainsWeights" EntityType="DatabaseModel2.DomainsWeight" />
+          <EntitySet Name="Questions" EntityType="DatabaseModel2.Question" />
+          <EntitySet Name="QuestionsWeights" EntityType="DatabaseModel2.QuestionsWeight" />
+          <EntitySet Name="Users" EntityType="DatabaseModel2.User" />
+          <AssociationSet Name="FK_Domains_ToTable" Association="DatabaseModel2.FK_Domains_ToTable">
+            <End Role="Domains" EntitySet="Domains" />
+            <End Role="Domains1" EntitySet="Domains" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DomainsWeights_ToTable_1" Association="DatabaseModel2.FK_DomainsWeights_ToTable_1">
+            <End Role="Domains" EntitySet="Domains" />
+            <End Role="DomainsWeights" EntitySet="DomainsWeights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_ToTable" Association="DatabaseModel2.FK_Questions_ToTable">
+            <End Role="Domains" EntitySet="Domains" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DomainsWeights_ToTable" Association="DatabaseModel2.FK_DomainsWeights_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DomainsWeights" EntitySet="DomainsWeights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionsWeights_ToTable_1" Association="DatabaseModel2.FK_QuestionsWeights_ToTable_1">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="QuestionsWeights" EntitySet="QuestionsWeights" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionsWeights_ToTable" Association="DatabaseModel2.FK_QuestionsWeights_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="QuestionsWeights" EntitySet="QuestionsWeights" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Domain">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="true" />
+          <Property Name="MasterDomain" Type="Int32" />
+          <NavigationProperty Name="Domains1" Relationship="DatabaseModel2.FK_Domains_ToTable" FromRole="Domains" ToRole="Domains1" />
+          <NavigationProperty Name="Domain1" Relationship="DatabaseModel2.FK_Domains_ToTable" FromRole="Domains1" ToRole="Domains" />
+          <NavigationProperty Name="DomainsWeights" Relationship="DatabaseModel2.FK_DomainsWeights_ToTable_1" FromRole="Domains" ToRole="DomainsWeights" />
+          <NavigationProperty Name="Questions" Relationship="DatabaseModel2.FK_Questions_ToTable" FromRole="Domains" ToRole="Questions" />
+        </EntityType>
+        <EntityType Name="DomainsWeight">
+          <Key>
+            <PropertyRef Name="User" />
+            <PropertyRef Name="Domain" />
+          </Key>
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <Property Name="Domain" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Single" Nullable="false" />
+          <NavigationProperty Name="Domain1" Relationship="DatabaseModel2.FK_DomainsWeights_ToTable_1" FromRole="DomainsWeights" ToRole="Domains" />
+          <NavigationProperty Name="User1" Relationship="DatabaseModel2.FK_DomainsWeights_ToTable" FromRole="DomainsWeights" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Question1" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="true" />
+          <Property Name="Answer" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="true" />
+          <Property Name="Domain" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Domain1" Relationship="DatabaseModel2.FK_Questions_ToTable" FromRole="Questions" ToRole="Domains" />
+          <NavigationProperty Name="QuestionsWeights" Relationship="DatabaseModel2.FK_QuestionsWeights_ToTable_1" FromRole="Questions" ToRole="QuestionsWeights" />
+        </EntityType>
+        <EntityType Name="QuestionsWeight">
+          <Key>
+            <PropertyRef Name="User" />
+            <PropertyRef Name="Question" />
+          </Key>
+          <Property Name="User" Type="Int32" Nullable="false" />
+          <Property Name="Question" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Single" Nullable="false" />
+          <NavigationProperty Name="Question1" Relationship="DatabaseModel2.FK_QuestionsWeights_ToTable_1" FromRole="QuestionsWeights" ToRole="Questions" />
+          <NavigationProperty Name="User1" Relationship="DatabaseModel2.FK_QuestionsWeights_ToTable" FromRole="QuestionsWeights" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="true" />
+          <Property Name="Passwrod" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="true" />
+          <Property Name="Admin" Type="Boolean" Nullable="false" />
+          <Property Name="Confirmed" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="Note" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DomainsWeights" Relationship="DatabaseModel2.FK_DomainsWeights_ToTable" FromRole="Users" ToRole="DomainsWeights" />
+          <NavigationProperty Name="QuestionsWeights" Relationship="DatabaseModel2.FK_QuestionsWeights_ToTable" FromRole="Users" ToRole="QuestionsWeights" />
+        </EntityType>
+        <Association Name="FK_Domains_ToTable">
+          <End Role="Domains" Type="DatabaseModel2.Domain" Multiplicity="0..1" />
+          <End Role="Domains1" Type="DatabaseModel2.Domain" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Domains1">
+              <PropertyRef Name="MasterDomain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DomainsWeights_ToTable_1">
+          <End Role="Domains" Type="DatabaseModel2.Domain" Multiplicity="1" />
+          <End Role="DomainsWeights" Type="DatabaseModel2.DomainsWeight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DomainsWeights">
+              <PropertyRef Name="Domain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_ToTable">
+          <End Role="Domains" Type="DatabaseModel2.Domain" Multiplicity="1" />
+          <End Role="Questions" Type="DatabaseModel2.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Domains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="Domain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DomainsWeights_ToTable">
+          <End Role="Users" Type="DatabaseModel2.User" Multiplicity="1" />
+          <End Role="DomainsWeights" Type="DatabaseModel2.DomainsWeight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DomainsWeights">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionsWeights_ToTable_1">
+          <End Role="Questions" Type="DatabaseModel2.Question" Multiplicity="1" />
+          <End Role="QuestionsWeights" Type="DatabaseModel2.QuestionsWeight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionsWeights">
+              <PropertyRef Name="Question" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionsWeights_ToTable">
+          <End Role="Users" Type="DatabaseModel2.User" Multiplicity="1" />
+          <End Role="QuestionsWeights" Type="DatabaseModel2.QuestionsWeight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionsWeights">
+              <PropertyRef Name="User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DatabaseModel2StoreContainer" CdmEntityContainer="DatabaseEntities2">
+          <EntitySetMapping Name="Domains">
+            <EntityTypeMapping TypeName="DatabaseModel2.Domain">
+              <MappingFragment StoreEntitySet="Domains">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MasterDomain" ColumnName="MasterDomain" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DomainsWeights">
+            <EntityTypeMapping TypeName="DatabaseModel2.DomainsWeight">
+              <MappingFragment StoreEntitySet="DomainsWeights">
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="DatabaseModel2.Question">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Question1" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionsWeights">
+            <EntityTypeMapping TypeName="DatabaseModel2.QuestionsWeight">
+              <MappingFragment StoreEntitySet="QuestionsWeights">
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DatabaseModel2.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Passwrod" ColumnName="Passwrod" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

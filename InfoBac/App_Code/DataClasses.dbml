@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Database" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\Database.mdf;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DatabaseConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Domains" Member="Domains">
+    <Type Name="Domain">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MasterDomain" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Domain_Domain" Member="Domains" ThisKey="Id" OtherKey="MasterDomain" Type="Domain" />
+      <Association Name="Domain_DomainsWeight" Member="DomainsWeights" ThisKey="Id" OtherKey="Domain" Type="DomainsWeight" />
+      <Association Name="Domain_Question" Member="Questions" ThisKey="Id" OtherKey="Domain" Type="Question" />
+      <Association Name="Domain_Domain" Member="Domain1" ThisKey="MasterDomain" OtherKey="Id" Type="Domain" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Passwrod" Type="System.String" DbType="NChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Confirmed" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Note" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="User_DomainsWeight" Member="DomainsWeights" ThisKey="Id" OtherKey="User" Type="DomainsWeight" />
+      <Association Name="User_QuestionsWeight" Member="QuestionsWeights" ThisKey="Id" OtherKey="User" Type="QuestionsWeight" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DomainsWeights" Member="DomainsWeights">
+    <Type Name="DomainsWeight">
+      <Column Name="[User]" Member="User" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Domain" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Weight" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Association Name="User_DomainsWeight" Member="User1" ThisKey="User" OtherKey="Id" Type="User" IsForeignKey="true" />
+      <Association Name="Domain_DomainsWeight" Member="Domain1" ThisKey="Domain" OtherKey="Id" Type="Domain" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Questions" Member="Questions">
+    <Type Name="Question">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Question" Member="Question1" Type="System.String" DbType="NChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Answer" Type="System.String" DbType="NChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Domain" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Question_QuestionsWeight" Member="QuestionsWeights" ThisKey="Id" OtherKey="Question" Type="QuestionsWeight" />
+      <Association Name="Domain_Question" Member="Domain1" ThisKey="Domain" OtherKey="Id" Type="Domain" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QuestionsWeights" Member="QuestionsWeights">
+    <Type Name="QuestionsWeight">
+      <Column Name="[User]" Member="User" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Question" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Weight" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Association Name="User_QuestionsWeight" Member="User1" ThisKey="User" OtherKey="Id" Type="User" IsForeignKey="true" />
+      <Association Name="Question_QuestionsWeight" Member="Question1" ThisKey="Question" OtherKey="Id" Type="Question" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

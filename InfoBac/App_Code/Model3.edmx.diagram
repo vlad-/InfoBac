@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="660772a3f68b4e40b4b580a4fe4147b6" Name="Diagram1">
+        <EntityTypeShape EntityType="DatabaseModel2.Domains" Width="1.5" PointX="7.625" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel2.DomainsWeight" Width="1.75" PointX="3.375" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel2.Questions" Width="1.5" PointX="7.375" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel2.QuestionsWeight" Width="1.625" PointX="3.375" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel2.Users" Width="1.5" PointX="0.875" PointY="2.375" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel2.FK_Domains_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel2.FK_DomainsWeights_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel2.FK_Questions_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel2.FK_DomainsWeights_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel2.FK_QuestionsWeights_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel2.FK_QuestionsWeights_ToTable" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
