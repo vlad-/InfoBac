@@ -4,7 +4,7 @@
 body   
 {
     background-color: #bbbbbb;
-    background-image: url('../dotted_bg.png');
+    background-image: url('/resources/dotted_bg.png');
     background-repeat: repeat-x;
     font-size: .80em;
     font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
@@ -116,7 +116,7 @@ first child of the left and right table columns */
 }
 
 .header
-{   background-image: url('../tile.png');
+{   background-image: url('/resources/tile.png');
     background-repeat: repeat;
     position: relative;
     margin: 0px;
@@ -280,7 +280,7 @@ div.accountInfo
     display: block;
     text-align: right;
     padding: 10px;
-    color: White;
+    
     height:70px;
 }
 

@@ -1,8 +1,13 @@
-﻿<%@ Page Title="Add Question" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="AddQuestion.aspx.cs" Inherits="AddQuestion" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddQuestion.aspx.cs" Inherits="AddQuestion" %>
 
-<asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadContent" Runat="Server">
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
         <div>
             Tip Intrebare : 
 
@@ -39,6 +44,12 @@
                 Raspuns :
                 <br />
                 <asp:TextBox ID="Answer" runat="server"  Width="800px" Rows="5" TextMode="MultiLine"></asp:TextBox>
+                <asp:DropDownList ID="GAnswer" runat="server" Visible="false">
+                    <asp:ListItem>a</asp:ListItem>
+                    <asp:ListItem>b</asp:ListItem>
+                    <asp:ListItem>c</asp:ListItem>
+                    <asp:ListItem>d</asp:ListItem>
+                </asp:DropDownList>
             </p>
 
 
@@ -61,4 +72,6 @@
             <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
 
         </div>
-</asp:Content>
+    </form>
+</body>
+</html>
