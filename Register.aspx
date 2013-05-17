@@ -1,14 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="pages_Register" %>
+﻿<%@ Page Title="Register" Language="C#" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="pages_Register" MasterPageFile="~/notLogIn.master" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="../styles/style.css" />
-</head>
-<body>
-   <form id="form1" class="register" runat="server">
+<asp:Content ContentPlaceHolderID="MainContent" ID="content" runat="server">
         <table>
             <tr>
                 <td class="error_message" style="color:red;" colspan="2">
@@ -48,6 +40,4 @@
             </tr>
         
         </table>
-        </form>
-</body>
-</html>
+</asp:Content>

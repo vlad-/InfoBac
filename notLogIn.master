@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="Site" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="notLogIn.master.cs" Inherits="Site" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
@@ -16,14 +16,19 @@
                 <h1>InfoBac</h1>
             </div>
             <div class="loginDisplay">
-                <asp:ContentPlaceHolder ID="LoginContent" runat="server"/>
+                <asp:Menu ID="Login" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Vertical">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="Login.aspx" Text="Login"/>
+                        <asp:MenuItem NavigateUrl="Register.aspx" Text="Register"/>
+                    </Items>
+                </asp:Menu>
             </div>
             <div class="clear hideSkiplink">
                 <div style="display:inline-block">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem NavigateUrl="AddQuestion.aspx" Text="this page"/>
-                        <asp:MenuItem NavigateUrl="AddQuestion.aspx" Text="same page"/>
+                        <asp:MenuItem NavigateUrl="Default.aspx" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="About.aspx" Text="About"/>
                     </Items>
                 </asp:Menu>
                 </div>

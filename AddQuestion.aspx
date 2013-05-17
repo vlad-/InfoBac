@@ -1,13 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddQuestion.aspx.cs" Inherits="AddQuestion" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddQuestion.aspx.cs" Inherits="AddQuestion" MasterPageFile="~/logIn.master" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1" runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
+<asp:Content ContentPlaceHolderID="MainContent" ID="content" runat="server">
         <div>
             Tip Intrebare : 
 
@@ -72,6 +65,4 @@
             <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
 
         </div>
-    </form>
-</body>
-</html>
+</asp:Content>
