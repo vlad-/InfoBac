@@ -25,6 +25,7 @@
                     <Items>
                         <asp:MenuItem NavigateUrl="Home.aspx" Text="Home"/>
                         <asp:MenuItem NavigateUrl="AddQuestion.aspx" Text="Add Question"/>
+                        <asp:MenuItem NavigateUrl="TestRandom.aspx" Text="Test"/>
                     </Items>
                 </asp:Menu>
                 </div>

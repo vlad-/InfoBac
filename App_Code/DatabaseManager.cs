@@ -6,6 +6,9 @@ using System.Web;
 
 public static class DatabaseManager
 {
+    public const double DefaultDomainWeight = 5;
+    public const double DefaultQuestionWeight = 5;
+
     private static SqlConnection connection;
     static DatabaseManager()
     {
@@ -158,7 +161,7 @@ public static class DatabaseManager
             while (rdr2.Read())
             {
                 int question = (int)rdr2.GetValue(0);
-                questionWeights.Add(question, 0);
+                questionWeights.Add(question, DefaultQuestionWeight);
             }
             
         }
@@ -192,7 +195,7 @@ public static class DatabaseManager
             while (rdr2.Read())
             {
                 string domain = rdr2.GetValue(0).ToString().Trim();
-                domainWeights.Add(domain, 0);
+                domainWeights.Add(domain, DefaultDomainWeight);
             }
 
         }
