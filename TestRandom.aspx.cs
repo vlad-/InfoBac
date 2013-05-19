@@ -20,20 +20,21 @@ public partial class pages_Home : System.Web.UI.Page
             textLabels[i] = new Label();
             feedbackLabels[i] = new Label();
             rblists[i] = new RadioButtonList();
+            rblists[i].SelectedIndexChanged += new EventHandler(CheckedChanged);
+            rblists[i].AutoPostBack = true;
             tot.Controls.Add(textLabels[i]);
             tot.Controls.Add(new LiteralControl("<br />"));
             tot.Controls.Add(rblists[i]);
             tot.Controls.Add(new LiteralControl("<br />"));
             tot.Controls.Add(feedbackLabels[i]);
             tot.Controls.Add(new LiteralControl("<br />"));
-            rblists[i].SelectedIndex = 1;
             rblists[i].ID = "id" + i;
         }
     }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //SubmitButton.Enabled = false;
+        SubmitButton.Enabled = false;
         if (!Page.IsPostBack)
         {
             NewQuestions();
@@ -69,21 +70,17 @@ public partial class pages_Home : System.Web.UI.Page
         return keys[index];
     }
 
-    private int[] perm4() {
-
-        int[] p = new int[4];
-        p[0] = p[1] = p[2] = p[3] = 0;
-        //permutare 4
-        p[0] = r.Next(4);
-        p[1] = r.Next(3);
-        if (p[0] == p[1]) { p[1]++; }
-        p[2] = r.Next(2);
-        while (p[2] == p[0] || p[2] == p[1])
+    private int[] fisher_yates_shuffle() {
+        int n = 4;
+        int[] p = {0,1,2,3};
+        while (n > 1)
         {
-            p[2] = (p[2] + 1) % 4;
+            int k = r.Next(n);
+            n--;
+            int v = p[k];
+            p[k] = p[n];
+            p[n] = v;
         }
-        p[3] = 6 - p[0] - p[1] - p[2];
-
         return p;
     }
 
@@ -98,7 +95,7 @@ public partial class pages_Home : System.Web.UI.Page
         s[3] = q.Answer4;
         a = q.Answer[0] - 'a';
         s[a] += "  !!!this"; //test purposes
-        int[] choice = perm4();
+        int[] choice = fisher_yates_shuffle();
         //trec a prin inversa perm ca sa aflu care dintre cei 4 itemi in ordine e acum raspunsul
         if (choice[0] == a) { a = 0; }
         else if (choice[1] == a) { a = 1; }
@@ -113,22 +110,24 @@ public partial class pages_Home : System.Web.UI.Page
     protected void Answer(object sender, EventArgs e)
     {
         for (int i=0;i<nrintrebari;i++){
-            int si = ((RadioButtonList)tot.FindControl("id"+i)).SelectedIndex;
+            int si = rblists[i].SelectedIndex;
             if ( si == answer[i])
             {
+                feedbackLabels[i].ForeColor = System.Drawing.Color.Green;
                 feedbackLabels[i].Text=("la ultima ai raspuns corect " +si+"=" +answer[i]+ " <br/>");
             }
             else {
+                feedbackLabels[i].ForeColor = System.Drawing.Color.Red;
                 feedbackLabels[i].Text = ("la ultima ai raspuns gresit " + si + "!=" + answer[i] + " <br/>");
             }
         }
-
-        NewQuestions();
+            NewQuestions();
         
     }
     protected void CheckedChanged(object sender, EventArgs e)
     {
-        for (int i = 0; i < nrintrebari; i++) {
+        for (int i = nrintrebari-1; i >=0; i--)
+        {
             if (rblists[i].SelectedIndex == -1) {
                 return;
             }
