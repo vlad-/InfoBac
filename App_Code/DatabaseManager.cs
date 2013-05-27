@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
+
+
 public static class DatabaseManager
 {
     public const double DefaultDomainWeight = 5;
@@ -148,7 +150,7 @@ public static class DatabaseManager
         string querry2 = String.Format("select Id from Questions where Id NOT IN (select Question from QuestionsWeights where [User] = {0})", userId);
         SqlDataReader rdr1 = SelectQuerry(querry1);
         SqlDataReader rdr2 = SelectQuerry(querry2);
-
+        
         try
         {
             while (rdr1.Read())
