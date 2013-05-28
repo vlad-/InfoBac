@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
+
+
 public static class DatabaseManager
 {
     public const double DefaultDomainWeight = 0;
@@ -12,7 +14,7 @@ public static class DatabaseManager
     private static SqlConnection connection;
     static DatabaseManager()
     {
-        connection = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=D:\InfoBac\App_Data\Database.mdf;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
+        connection = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\Furtuna\Documents\GitHub\InfoBac\App_Data\Database.mdf;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
         connection.Open();
     }
 
@@ -137,13 +139,12 @@ public static class DatabaseManager
             return null;
         }
         
-
     }
 
     //pentru un userId dat returneaza un dictionar in care cheia e intrebarea si valoarea este ponderea ei
-    public static Dictionary<int, double> GetQuestionsWeights(int userId)
+    public static Dictionary<int, WeightInfo> GetQuestionsWeights(int userId)
     {
-        Dictionary<int, double> questionWeights = new Dictionary<int, double>();
+        Dictionary<int, WeightInfo> questionWeights = new Dictionary<int, WeightInfo>();
 
         string querry1 = String.Format("select Question, Weight, Number, MistakesNumber, StreakNumber from QuestionsWeights where [User] = {0}", userId);
         string querry2 = String.Format("select Id from Questions where Id NOT IN (select Question from QuestionsWeights where [User] = {0})", userId);
@@ -156,14 +157,14 @@ public static class DatabaseManager
             {
                 int question = (int)rdr1.GetValue(0);
                 WeightInfo weightInfo = new WeightInfo((Double)rdr1.GetValue(1), (int)rdr1.GetValue(2), (int)rdr1.GetValue(3), (int)rdr1.GetValue(4));
-                questionWeights.Add(question, weightInfo.QuestionWeight);
+                questionWeights.Add(question, weightInfo);
             }
 
             while (rdr2.Read())
             {
                 int question = (int)rdr2.GetValue(0);
                 WeightInfo weightInfo = new WeightInfo(DefaultQuestionWeight, 0, 0, 0);
-                questionWeights.Add(question, weightInfo.QuestionWeight);
+                questionWeights.Add(question, weightInfo);
             }
             
         }
