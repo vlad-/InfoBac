@@ -7,177 +7,16 @@ using System.Web.UI.WebControls;
 
 public partial class pages_Home : System.Web.UI.Page
 {
-    static Random r = new Random();
     static int nrintrebari = 3;
-    static Dictionary<int, double> d;
-    static Dictionary<int, double> feedback = new Dictionary<int, double>();
-    static bool finished;
-    static bool valid;
+    static int[] chosenkeylist = new int[nrintrebari];
     static Question[] questionlist = new Question[nrintrebari];
     static int[][] choices = new int[nrintrebari][];
-    
-    class UniversalQuestion
-    {
-        public Label l;
-        public Label fl;
-        public UniversalQuestion() {
-            l = new Label();
-            fl = new Label();
-            fl.Visible = false;
-        }
-        public virtual void display(PlaceHolder p){
-        }
-        public virtual bool verify()
-        {
-            return false;
-        }
-        public virtual bool validate()
-        {
-            return false;
-        }
-    };
-    class ChoiceQuestion : UniversalQuestion {
-        static int count = 0;
-        public RadioButtonList rbl;
-        int answer;
-        public ChoiceQuestion(Question q,int[] choice)
-        {
-            rbl = new RadioButtonList();
-            count++;
-            base.l.Text = q.QuestionText;
-            String[] s = new String[4];
-            s[0] = q.Answer1;
-            s[1] = q.Answer2;
-            s[2] = q.Answer3;
-            s[3] = q.Answer4;
-            answer = q.Answer[0] - 'a';
-            s[answer] += "  !!!this"; //test purposes
-            //trec a prin inversa perm ca sa aflu care dintre cei 4 itemi in ordine e acum raspunsul
-            if (choice[0] == answer) { answer = 0; }
-            else if (choice[1] == answer) { answer = 1; }
-            else if (choice[2] == answer) { answer = 2; }
-            else if (choice[3] == answer) { answer = 3; }
-            rbl.Items.Clear();
-            rbl.Items.Add(new ListItem(s[choice[0]]));
-            rbl.Items.Add(new ListItem(s[choice[1]]));
-            rbl.Items.Add(new ListItem(s[choice[2]]));
-            rbl.Items.Add(new ListItem(s[choice[3]]));
-        }
-
-        public override bool validate()
-        {
-            if (rbl.SelectedIndex == -1)
-            {
-                base.fl.ForeColor = System.Drawing.Color.Red;
-                base.fl.Visible = true;
-                base.fl.Text = ("nu ai selectat optiune");
-                return false;
-            }
-            base.fl.Visible = false;
-            return true;
-        }
-
-        public override bool verify() {
-            rbl.Enabled = false;
-            if (rbl.SelectedIndex == answer)
-            {
-                rbl.Items[rbl.SelectedIndex].Attributes.Add("style", "background-color:#ABFF7A;border:2px solid #72CF5F;");
-                base.fl.Visible = true;
-                base.fl.ForeColor = System.Drawing.Color.Green;
-                base.fl.Text = ("ai raspuns corect " + rbl.SelectedIndex + "=" + answer);
-                return true;
-            }
-            rbl.Items[rbl.SelectedIndex].Attributes.Add("style", "background-color:#FF977A;border:2px solid #FF977A;");
-            rbl.Items[answer].Attributes.Add("style", "border:2px solid #72CF5F;");
-            base.fl.Visible = true;
-            base.fl.ForeColor = System.Drawing.Color.Red;
-            base.fl.Text = ("ai raspuns gresit " + rbl.SelectedIndex + "!=" + answer);
-            return false;
-        }
-        public override void display(PlaceHolder p) {
-            p.Controls.Add(base.l);
-            p.Controls.Add(new LiteralControl("<br />"));
-            p.Controls.Add(rbl);
-            p.Controls.Add(base.fl);
-            p.Controls.Add(new LiteralControl("<br />"));
-            p.Controls.Add(new LiteralControl("<br />"));
-        }
-    };
-    class InputQuestion : UniversalQuestion
-    {
-        bool isProgram;
-        static int icount = 0;
-        static int pcount = 0;
-        public TextBox t;
-        string answer;
-        public InputQuestion(Question q, bool ip) {
-            t = new TextBox();
-            base.l.Text = q.QuestionText;
-            answer = q.Answer;
-            isProgram = ip;
-            if (isProgram) 
-            {
-                pcount++;
-            } else
-            {
-                icount++;
-            }
-        }
-
-        public override bool validate()
-        {
-            if (t.Text.Length==0)
-            {
-                base.fl.Visible = true;
-                base.fl.ForeColor = System.Drawing.Color.Red;
-                base.fl.Text = ("nu ai completat campul");
-                return false;
-            }
-            base.fl.Visible = false;
-            return true;
-        }
-
-        public override bool verify()
-        {
-            t.Enabled = false;
-            bool verify = false;
-            if (isProgram)
-            {
-                verify = false; // verify = answer.Equals(compile_and_run(t.Text));
-            }
-            else {
-            verify=t.Text.Equals(answer);
-            }
-            
-            if (verify)
-                {
-                    t.BorderColor = System.Drawing.Color.FromArgb(171, 255, 122);
-                    base.fl.Visible = true;
-                    base.fl.ForeColor = System.Drawing.Color.Green;
-                    base.fl.Text = ("ai raspuns corect " + t.Text + "=" + answer);
-                    return true;
-                }
-                t.BorderColor = System.Drawing.Color.FromArgb(255, 151, 122);
-                base.fl.Visible = true;
-                base.fl.ForeColor = System.Drawing.Color.Red;
-                base.fl.Text = ("ai raspuns gresit " + t.Text + "!=" + answer);
-                return false;
-        }
-
-        public override void display(PlaceHolder p)
-        {
-            p.Controls.Add(base.l);
-            p.Controls.Add(new LiteralControl("<br />"));
-            p.Controls.Add(t);
-            p.Controls.Add(new LiteralControl("<br />"));
-            p.Controls.Add(base.fl);
-            p.Controls.Add(new LiteralControl("<br />"));
-            p.Controls.Add(new LiteralControl("<br />"));
-        }
-    };
-
     static UniversalQuestion[] questions = new UniversalQuestion[nrintrebari];
-
+    static Dictionary<int, WeightInfo> d;
+    static Dictionary<int, WeightInfo> feedback = new Dictionary<int, WeightInfo>();
+    static bool finished;
+    static bool valid;
+    static int userId;
     protected void Page_Init(object sender, EventArgs e) {
         if (!Page.IsPostBack)
         {
@@ -187,11 +26,11 @@ public partial class pages_Home : System.Web.UI.Page
         {
             if (questionlist[i].Type.Equals("Tip Grila"))
             {
-                questions[i] = new ChoiceQuestion(questionlist[i], choices[i]);
+                questions[i] = new ChoiceQuestion(chosenkeylist[i], questionlist[i], choices[i]);
             }
             else if (questionlist[i].Type.Equals("Standard"))
             {
-                questions[i] = new InputQuestion(questionlist[i], false);
+                questions[i] = new InputQuestion(chosenkeylist[i], questionlist[i], false);
             }
             questions[i].display(tot);
         }
@@ -200,39 +39,6 @@ public partial class pages_Home : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         
-    }
-
-    private int ChooseQuestion() {
-
-        int[] keys = d.Keys.ToArray<int>();
-        double[] weights = d.Values.ToArray<double>();
-        double numar = 0.0;
-        numar = weights.Sum();//numar = suma
-        numar = r.NextDouble() * numar; //numar= alegerea
-        double partialsum = 0.0;
-        int index = keys.Length - 1;
-        for (int i = 0; i < keys.Length - 1; i++)
-        {
-            partialsum += weights[i];
-            if (numar < partialsum) { index = i; break; }
-        }
-        //feedback.Add(keys[index], weights[index]);
-        d.Remove(keys[index]);
-        return keys[index];
-    }
-
-    static private int[] fisher_yates_shuffle() {
-        int n = 4;
-        int[] p = {0,1,2,3};
-        while (n > 1)
-        {
-            int k = r.Next(n);
-            n--;
-            int v = p[k];
-            p[k] = p[n];
-            p[n] = v;
-        }
-        return p;
     }
 
     protected void Answer(object sender, EventArgs e)
@@ -246,41 +52,75 @@ public partial class pages_Home : System.Web.UI.Page
                 if (!questions[i].validate()) valid = false;
 
             if (!valid) return;
-            
-            //int[] keys = feedback.Keys.ToArray<int>();//to do modify weights
-            for (int i = 0; i < nrintrebari; i++)
-                if (!questions[i].verify()) nrfail++;
 
-            Chart1.Series["Series1"].Points.Clear();
-            int ii = 0;
-            if (nrintrebari - nrfail > 0)
             {
-                Chart1.Series["Series1"].Points.AddY(nrintrebari - nrfail);
-                Chart1.Series["Series1"].Points[0].Color = System.Drawing.Color.FromArgb(171, 255, 122);
-                ii = 1;
+                // tre sa ma asigur ca e cel mai recent dictionar, si cel complet
+                d = DatabaseManager.GetQuestionsWeights(userId);
+
+                //verification stuff
+                for (int i = 0; i < nrintrebari; i++)
+                    if (!questions[i].verify(userId, d[chosenkeylist[i]])) 
+                    { 
+                        nrfail++;
+                    }
+                //chart stuff
+                Chart1.Series["Series1"].Points.Clear();
+                int ii = 0;
+                if (nrintrebari - nrfail > 0)
+                {
+                    Chart1.Series["Series1"].Points.AddY(nrintrebari - nrfail);
+                    Chart1.Series["Series1"].Points[0].Color = System.Drawing.Color.FromArgb(171, 255, 122);
+                    ii = 1;
+                }
+                if (nrfail > 0)
+                {
+                    Chart1.Series["Series1"].Points.AddY(nrfail);
+                    Chart1.Series["Series1"].Points[ii].Color = System.Drawing.Color.FromArgb(255, 151, 122);
+                }
+
+                Dictionary<string, WeightInfo> domainsWeights = DatabaseManager.GetDomainsWeights(userId);
+                Chart2.Series["Nr. raspunsuri"].Points.Clear();
+                Chart2.Series["Nr. greseli"].Points.Clear();
+                Chart2.Series["Nr. greseli la rand"].Points.Clear();
+                Chart2.ChartAreas.FindByName("ChartArea1").AxisX.Interval = 1;
+
+                foreach (KeyValuePair<string, WeightInfo> entry in domainsWeights)
+                {
+                    Chart2.Series["Nr. raspunsuri"].Points.AddY(entry.Value.Number);
+                    Chart2.Series["Nr. greseli"].Points.AddXY(entry.Key, entry.Value.MistakesNumber);
+                    Chart2.Series["Nr. greseli la rand"].Points.AddY(entry.Value.StreakNumber);
+                }
+
+                Chart1.Visible = true;
+                Chart2.Visible = true;
+                //end chart stuff
+                finished = true;
+                SubmitButton.Text = "Next Test Please";
             }
-            if (nrfail > 0)
-            {
-                Chart1.Series["Series1"].Points.AddY(nrfail);
-                Chart1.Series["Series1"].Points[ii].Color = System.Drawing.Color.FromArgb(255, 151, 122);
-            }
-            finished = true;
-            Chart1.Visible = true;
-            SubmitButton.Text = "Next Test Please";
         }
     }
 
     private void init()
     {
+        userId = (int)Session["userId"];
         Chart1.Visible = false;
+        Chart2.Visible = false;
         finished = false;
         SubmitButton.Text = "Submit Answers";
-        d = DatabaseManager.GetQuestionsWeights((int)Session["userId"]);
-        for (int i = 0; i < nrintrebari; i++)
-        {
-            questionlist[i] = DatabaseManager.GetQuestion(ChooseQuestion());
-            if (questionlist[i].Type.Equals("Tip Grila")) { choices[i] = fisher_yates_shuffle(); }
+        Dictionary<string,WeightInfo> domainsWeights = DatabaseManager.GetDomainsWeights(userId);
+        feedback.Clear();
+
+        Dictionary<string, int> domainChoices = TestLogic.ChooseDomains(domainsWeights, nrintrebari);
+        int i = 0;
+        foreach(KeyValuePair<string,int> entry in domainChoices){
+            d = DatabaseManager.GetQuestionsWeights(userId, entry.Key);
+            for (int j = 0; j < entry.Value; j++)
+            {
+                chosenkeylist[i] = TestLogic.ChooseQuestion(d, feedback);
+                questionlist[i] = DatabaseManager.GetQuestion(chosenkeylist[i]);
+                if (questionlist[i].Type.Equals("Tip Grila")) { choices[i] = TestLogic.FisherYatesShuffle(); }
+                i++;
+            }
         }
     }
-
 }

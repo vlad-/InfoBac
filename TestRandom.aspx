@@ -14,6 +14,34 @@
             <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
         </ChartAreas>
     </asp:Chart>
+    <asp:Chart ID="Chart2" runat="server" IsSoftShadows="False" Width="600px" >
+        <Series>
+            <asp:Series Name="Nr. raspunsuri">
+                <Points>
+                </Points>
+            </asp:Series>
+        </Series>
+        <Series>
+            <asp:Series Name="Nr. greseli">
+                <Points>
+                </Points>
+            </asp:Series>
+        </Series>
+        <Series>
+            <asp:Series Name="Nr. greseli la rand">
+                <Points>
+                </Points>
+            </asp:Series>
+        </Series>
+        <Legends>
+            <asp:Legend>
+
+            </asp:Legend>
+        </Legends>
+        <ChartAreas>
+            <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+        </ChartAreas>
+    </asp:Chart>
     <br/>
     <asp:PlaceHolder ID="tot" runat="server"></asp:PlaceHolder>
     <br/>

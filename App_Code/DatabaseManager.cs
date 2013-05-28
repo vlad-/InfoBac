@@ -8,7 +8,7 @@ using System.Web;
 
 public static class DatabaseManager
 {
-    public const double DefaultDomainWeight = 5;
+    public const double DefaultDomainWeight = 0;
     public const double DefaultQuestionWeight = 5;
 
     private static SqlConnection connection;
@@ -146,7 +146,7 @@ public static class DatabaseManager
     {
         Dictionary<int, WeightInfo> questionWeights = new Dictionary<int, WeightInfo>();
 
-        string querry1 = String.Format("select Question,Weight from QuestionsWeights where [User] = {0}", userId);
+        string querry1 = String.Format("select Question, Weight, Number, MistakesNumber, StreakNumber from QuestionsWeights where [User] = {0}", userId);
         string querry2 = String.Format("select Id from Questions where Id NOT IN (select Question from QuestionsWeights where [User] = {0})", userId);
         SqlDataReader rdr1 = SelectQuerry(querry1);
         SqlDataReader rdr2 = SelectQuerry(querry2);
@@ -177,11 +177,47 @@ public static class DatabaseManager
 
     }
 
+    //intrebarile dintrun anumit domeniu
+    public static Dictionary<int, WeightInfo> GetQuestionsWeights(int userId,string domain)
+    {
+        Dictionary<int, WeightInfo> questionWeights = new Dictionary<int, WeightInfo>();
+
+        string querry1 = String.Format("select qw.Question, qw.Weight, qw.Number, qw.MistakesNumber, qw.StreakNumber from QuestionsWeights qw, Questions q where qw.[User] = {0} and q.Id = qw.Question and q.Domain = '{1}'", userId,domain);
+        string querry2 = String.Format("select Id from Questions where Domain = '{1}' and Id NOT IN (select Question from QuestionsWeights where [User] = {0})", userId,domain);
+        SqlDataReader rdr1 = SelectQuerry(querry1);
+        SqlDataReader rdr2 = SelectQuerry(querry2);
+
+        try
+        {
+            while (rdr1.Read())
+            {
+                int question = (int)rdr1.GetValue(0);
+                WeightInfo weightInfo = new WeightInfo((Double)rdr1.GetValue(1), (int)rdr1.GetValue(2), (int)rdr1.GetValue(3), (int)rdr1.GetValue(4));
+                questionWeights.Add(question, weightInfo);
+            }
+
+            while (rdr2.Read())
+            {
+                int question = (int)rdr2.GetValue(0);
+                WeightInfo weightInfo = new WeightInfo(DefaultQuestionWeight, 0, 0, 0);
+                questionWeights.Add(question, weightInfo);
+            }
+
+        }
+        catch (Exception e)
+        {
+            Logger.WriteError(e.Message);
+        }
+
+        return questionWeights;
+
+    }
+
     public static Dictionary<string, WeightInfo> GetDomainsWeights(int userId)
     {
         Dictionary<string, WeightInfo> domainWeights = new Dictionary<string, WeightInfo>();
 
-        string querry1 = String.Format("select Domain,Weight from DomainsWeights where [User] = {0}", userId);
+        string querry1 = String.Format("select Domain, Weight, Number, MistakesNumber, StreakNumber from DomainsWeights where [User] = {0}", userId);
         string querry2 = String.Format("select Name from Domains where Name NOT IN (select Domain from DomainsWeights where [User] = {0})", userId);
         SqlDataReader rdr1 = SelectQuerry(querry1);
         SqlDataReader rdr2 = SelectQuerry(querry2);
@@ -212,9 +248,27 @@ public static class DatabaseManager
 
     }
 
+    public static WeightInfo GetDomainWeight(int userId, string domain)
+    {
+        string querry = String.Format("select Weight, Number, MistakesNumber, StreakNumber from DomainsWeights where [User] = {0} and Domain = '{1}'", userId, domain);
+        SqlDataReader rdr = SelectQuerry(querry);
+        try
+        {
+            if (!rdr.HasRows)
+                return new WeightInfo(DefaultDomainWeight, 0, 0, 0);
+            rdr.Read();
+            return new WeightInfo((Double)rdr.GetValue(0), (int)rdr.GetValue(1), (int)rdr.GetValue(2), (int)rdr.GetValue(3));
+        }
+        catch (Exception e)
+        {
+            Logger.WriteError(e.Message);
+            return null;
+        }
+    }
+
     public static bool SetQuestionWeight(int userId, int questionId, WeightInfo weightInfo)
     {
-        string command = String.Format("update QuestionsWeights set Weight = {0}, Number = {1}, MistakesNumber = {2}, SteakNumber = {3} where Question = {4} and [User] = {5}",
+        string command = String.Format("update QuestionsWeights set Weight = {0}, Number = {1}, MistakesNumber = {2}, StreakNumber = {3} where Question = {4} and [User] = {5}",
             weightInfo.QuestionWeight, weightInfo.Number, weightInfo.MistakesNumber, weightInfo.StreakNumber, questionId, userId);
 
         if (ExecuteNonQuerry(command) == 0)
@@ -229,7 +283,7 @@ public static class DatabaseManager
 
     public static bool SetDomainWeight(int userId, string domain, WeightInfo weightInfo)
     {
-        string command = String.Format("update DomainsWeights set Weight = {0}, Number = {1}, MistakesNumber = {2}, SteakNumber = {3} where Domain = '{4}' and [User] = {5}",
+        string command = String.Format("update DomainsWeights set Weight = {0}, Number = {1}, MistakesNumber = {2}, StreakNumber = {3} where Domain = '{4}' and [User] = {5}",
             weightInfo.QuestionWeight, weightInfo.Number, weightInfo.MistakesNumber, weightInfo.StreakNumber, domain, userId);
 
         if (ExecuteNonQuerry(command) == 0)
