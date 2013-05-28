@@ -141,6 +141,65 @@ public static class DatabaseManager
         
     }
 
+    public static Course GetCourse(int courseId)
+    {
+        SqlDataReader rdr = SelectQuerry("select * from Courses where Id = " + courseId);
+        if (rdr == null)
+            return null;
+
+        try
+        {
+            if (!rdr.HasRows)
+                return null;
+            rdr.Read();
+            Object[] row = new Object[rdr.FieldCount];
+
+            if (rdr.GetValues(row) != 0)
+                return new Course(row);
+            else
+                return null;
+        }
+        catch (Exception e)
+        {
+            Logger.WriteError(e.Message);
+            return null;
+        }
+    }
+
+    public static Dictionary<int, Course> GetCourses()
+    {
+        Dictionary<int, Course> courses = new Dictionary<int,Course>();
+
+        SqlDataReader rdr = SelectQuerry("Select * from Courses");
+        if( rdr == null )
+            return null;
+
+        try
+        {
+            if( !rdr.HasRows ) return null;
+
+            while (rdr.Read())
+            {
+
+                Object[] row = new Object[rdr.FieldCount];
+                if (rdr.GetValues(row) == 0) return null;
+
+                int id = (int)row[0];
+
+                Course tmpCourse = new Course( row );
+
+                courses.Add( id, tmpCourse );
+            }
+        }
+        catch( Exception e )
+        {
+            Logger.WriteError(e.Message);
+            return null;
+        }
+
+        return courses;
+    }
+
     //pentru un userId dat returneaza un dictionar in care cheia e intrebarea si valoarea este ponderea ei
     public static Dictionary<int, WeightInfo> GetQuestionsWeights(int userId)
     {
