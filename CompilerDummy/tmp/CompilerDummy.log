@@ -1,0 +1,16 @@
+﻿Build started 5/28/2013 10:35:24 PM.
+     1>Project "C:\Users\Radu\Documents\GitHub\InfoBac\CompilerDummy\CompilerDummy\CompilerDummy.vcxproj" on node 2 (Rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "C:\Users\Radu\Documents\GitHub\InfoBac\CompilerDummy\tmp\CompilerDummy.lastbuildstate".
+       InitializeBuildStatus:
+         Touching "C:\Users\Radu\Documents\GitHub\InfoBac\CompilerDummy\tmp\CompilerDummy.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Radu\Documents\GitHub\InfoBac\CompilerDummy\tmp\\" /Fd"C:\Users\Radu\Documents\GitHub\InfoBac\CompilerDummy\tmp\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt CompilerDummy.cpp stdafx.cpp
+         CompilerDummy.cpp
+     1>CompilerDummy.cpp(2): fatal error C1004: unexpected end-of-file found
+         stdafx.cpp
+     1>Done Building Project "C:\Users\Radu\Documents\GitHub\InfoBac\CompilerDummy\CompilerDummy\CompilerDummy.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.17
