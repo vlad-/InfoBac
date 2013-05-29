@@ -50,7 +50,8 @@ public partial class pages_Home : System.Web.UI.Page
             valid = true;
             for (int i = 0; i < nrintrebari; i++)
                 if (!questions[i].validate()) valid = false;
-
+            
+            Chart2.Visible = false;
             if (!valid) return;
 
             {
@@ -79,16 +80,14 @@ public partial class pages_Home : System.Web.UI.Page
                 }
 
                 Dictionary<string, WeightInfo> domainsWeights = DatabaseManager.GetDomainsWeights(userId);
-                Chart2.Series["Nr. raspunsuri"].Points.Clear();
-                Chart2.Series["Nr. greseli"].Points.Clear();
-                Chart2.Series["Nr. greseli la rand"].Points.Clear();
+                Chart2.Series["Raspunsuri Corecte"].Points.Clear();
+                Chart2.Series["Raspunsuri Gresite"].Points.Clear();
                 Chart2.ChartAreas.FindByName("ChartArea1").AxisX.Interval = 1;
 
                 foreach (KeyValuePair<string, WeightInfo> entry in domainsWeights)
                 {
-                    Chart2.Series["Nr. raspunsuri"].Points.AddY(entry.Value.Number);
-                    Chart2.Series["Nr. greseli"].Points.AddXY(entry.Key, entry.Value.MistakesNumber);
-                    Chart2.Series["Nr. greseli la rand"].Points.AddY(entry.Value.StreakNumber);
+                    Chart2.Series["Raspunsuri Corecte"].Points.AddY(entry.Value.Number - entry.Value.MistakesNumber);
+                    Chart2.Series["Raspunsuri Gresite"].Points.AddXY(entry.Key,entry.Value.MistakesNumber);
                 }
 
                 Chart1.Visible = true;
