@@ -16,19 +16,13 @@
     </asp:Chart>
     <asp:Chart ID="Chart2" runat="server" IsSoftShadows="False" Width="600px" >
         <Series>
-            <asp:Series Name="Nr. raspunsuri">
+            <asp:Series Name="Raspunsuri Corecte">
                 <Points>
                 </Points>
             </asp:Series>
         </Series>
         <Series>
-            <asp:Series Name="Nr. greseli">
-                <Points>
-                </Points>
-            </asp:Series>
-        </Series>
-        <Series>
-            <asp:Series Name="Nr. greseli la rand">
+            <asp:Series Name="Raspunsuri Gresite">
                 <Points>
                 </Points>
             </asp:Series>
