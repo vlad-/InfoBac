@@ -46,7 +46,21 @@ public static class DatabaseManager
             Logger.WriteError(e.Message);
             return 0;
         }
+    }
 
+    public static int ExecuteScallar(string command)
+    {
+        //returneaza un id, daca este int
+        try
+        {
+            SqlCommand cmd = new SqlCommand(command, connection);
+            return Decimal.ToInt32((Decimal)cmd.ExecuteScalar());
+        }
+        catch (Exception e)
+        {
+            Logger.WriteError(e.Message);
+            return 0;
+        }
     }
 
     private static bool UserExists(string userName)

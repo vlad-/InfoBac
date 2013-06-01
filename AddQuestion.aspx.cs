@@ -15,11 +15,22 @@ public partial class AddQuestion : System.Web.UI.Page
                 options.Visible = false;
                 Answer.Visible = true;
                 GAnswer.Visible = false;
+                progInput.Visible = false;
+                prog.Visible = false;
                 break;
             case "Tip Grila":
                 options.Visible = true;
                 Answer.Visible = false;
                 GAnswer.Visible = true;
+                progInput.Visible = false;
+                prog.Visible = false;
+                break;
+            case "Program":
+                options.Visible = false;
+                Answer.Visible = true;
+                GAnswer.Visible = false;
+                progInput.Visible = true;
+                prog.Visible = true;
                 break;
         }
 
@@ -42,19 +53,28 @@ public partial class AddQuestion : System.Web.UI.Page
             r4 = Server.HtmlEncode(option4.Text.Trim());
             answer = GAnswer.SelectedValue;
         }
-        else
+        else if (questionType.SelectedValue == "Standard")
         {
             answer = Answer.Text.Trim();
             answer = Server.HtmlEncode(answer);
             answer = answer.Replace("\r\n", "<br/>");
         }
+        else if (questionType.SelectedValue == "Program") {
+            answer = Answer.Text.Trim();
+        }
         String subjet = Subject.SelectedValue;
 
         //insert type, question, r1, r2, r3, r4, answer
-        String querry = String.Format("insert into Questions (Type,Question,Answer1,Answer2,Answer3,Answer4,Answer,Domain) values ('{0}',N'{1}','{2}','{3}','{4}','{5}','{6}','{7}')", qType, question, r1, r2, r3, r4, answer, subjet);
+        String querry = String.Format("insert into Questions (Type,Question,Answer1,Answer2,Answer3,Answer4,Answer,Domain) values ('{0}',N'{1}','{2}','{3}','{4}','{5}','{6}','{7}') SELECT IDENT_CURRENT('Questions')", qType, question, r1, r2, r3, r4, answer, subjet);
+        int insertedQuestionId=DatabaseManager.ExecuteScallar(querry);
 
-        DatabaseManager.ExecuteNonQuerry(querry);
-        
+        if (questionType.SelectedValue == "Program")
+        {
+            String pi=progInput.Text.Trim();
+            querry = String.Format("insert into ProgramInput (Id,Input) values ('{0}','{1}')", insertedQuestionId, pi);
+            DatabaseManager.ExecuteNonQuerry(querry);
+        }
+
         Response.Redirect("AddQuestion.aspx");
     }
 }

@@ -16,12 +16,14 @@ public class InputQuestion : UniversalQuestion
     {
         base.domain = q.Domain;
         base.id = i;
+        isProgram = ip;
         t = new TextBox();
         base.l.Text = q.Domain + ") " + q.QuestionText;
         answer = q.Answer;
-        isProgram = ip;
         if (isProgram)
         {
+            t.TextMode = TextBoxMode.MultiLine;
+            t.Rows = 10;
             pcount++;
         }
         else
@@ -48,11 +50,14 @@ public class InputQuestion : UniversalQuestion
         t.Enabled = false;
         WeightInfo domainWeightInfo = DatabaseManager.GetDomainWeight(user, domain);
         double newDomainWeight;
+        string programReturn="";
 
         bool vverify = false;
         if (isProgram)
         {
-            vverify = false; // vverify = answer.Equals(compile_and_run(t.Text));
+            if(CCompiler.Compile("#include<stdlib.h>\n#include<stdio.h>\nint main(){\n"+t.Text+"\nreturn 0;}\n", out programReturn))
+                vverify = answer.Equals(programReturn);
+            programReturn = programReturn.Replace("\r\n", "<br/>");
         }
         else
         {
@@ -64,7 +69,8 @@ public class InputQuestion : UniversalQuestion
             t.BorderColor = System.Drawing.Color.FromArgb(171, 255, 122);
             base.fl.Visible = true;
             base.fl.ForeColor = System.Drawing.Color.Green;
-            base.fl.Text = ("ai raspuns corect " + t.Text + "=" + answer);
+            if (!isProgram) base.fl.Text = ("ai raspuns corect");
+            else base.fl.Text = programReturn;
             
             DatabaseManager.SetQuestionWeight(user, id, new WeightInfo(DatabaseManager.DefaultQuestionWeight, questionWeightInfo.Number + 1, questionWeightInfo.MistakesNumber, 0));
             newDomainWeight = domainWeightInfo.QuestionWeight * TestLogic.DomainDecrement;
@@ -76,8 +82,9 @@ public class InputQuestion : UniversalQuestion
         t.BorderColor = System.Drawing.Color.FromArgb(255, 151, 122);
         base.fl.Visible = true;
         base.fl.ForeColor = System.Drawing.Color.Red;
-        base.fl.Text = ("ai raspuns gresit " + t.Text + "!=" + answer);
-        
+        if (!isProgram) base.fl.Text = ("ai raspuns gresit, raspunsul corect era " + ('a'+answer));
+        else base.fl.Text = programReturn;
+            
         double newWeight = questionWeightInfo.QuestionWeight * TestLogic.QuestionIncrement;
         if (newWeight > TestLogic.MaxQuestionWeight) { newWeight = TestLogic.MaxQuestionWeight; }
         DatabaseManager.SetQuestionWeight(user, id, new WeightInfo(newWeight, questionWeightInfo.Number + 1, questionWeightInfo.MistakesNumber + 1, questionWeightInfo.StreakNumber + 1));

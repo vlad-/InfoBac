@@ -32,6 +32,10 @@ public partial class pages_Home : System.Web.UI.Page
             {
                 questions[i] = new InputQuestion(chosenkeylist[i], questionlist[i], false);
             }
+            else if (questionlist[i].Type.Equals("Program"))
+            {
+                questions[i] = new InputQuestion(chosenkeylist[i], questionlist[i], true);
+            }
             questions[i].display(tot);
         }
     }

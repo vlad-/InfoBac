@@ -2,12 +2,28 @@
 
 <asp:Content ContentPlaceHolderID="MainContent" ID="content" runat="server">
         <div>
+            <p>
+                Subiect :
+                <asp:DropDownList ID="Subject" runat="server" AutoPostBack="False">
+                    <asp:ListItem>1.1</asp:ListItem>
+                    <asp:ListItem>1.2</asp:ListItem>
+                    <asp:ListItem>2.1</asp:ListItem>
+                    <asp:ListItem>2.2</asp:ListItem>
+                    <asp:ListItem>2.3</asp:ListItem>
+                    <asp:ListItem>2.4</asp:ListItem>
+                    <asp:ListItem>2.5</asp:ListItem>
+                    <asp:ListItem>3.1</asp:ListItem>
+                    <asp:ListItem>3.2</asp:ListItem>
+                    <asp:ListItem>3.3</asp:ListItem>
+                </asp:DropDownList>
+            </p>
+
             Tip Intrebare : 
 
             <asp:DropDownList ID="questionType" runat="server" AutoPostBack="True">
                 <asp:ListItem>Standard</asp:ListItem>
                 <asp:ListItem>Tip Grila</asp:ListItem>
-
+                <asp:ListItem>Program</asp:ListItem>
             </asp:DropDownList>
 
             <br />
@@ -37,6 +53,8 @@
                 Raspuns :
                 <br />
                 <asp:TextBox ID="Answer" runat="server"  Width="800px" Rows="5" TextMode="MultiLine"></asp:TextBox>
+                <asp:Label ID="prog" runat="server" Text="<br/>Input la program pentru raspunsul de mai sus:<br/>"></asp:Label>
+                <asp:TextBox ID="progInput" runat="server"  Width="800px" Rows="5" TextMode="MultiLine"></asp:TextBox>
                 <asp:DropDownList ID="GAnswer" runat="server" Visible="false">
                     <asp:ListItem>a</asp:ListItem>
                     <asp:ListItem>b</asp:ListItem>
@@ -44,24 +62,6 @@
                     <asp:ListItem>d</asp:ListItem>
                 </asp:DropDownList>
             </p>
-
-
-            <p>
-                Subiect :
-                <asp:DropDownList ID="Subject" runat="server" AutoPostBack="False">
-                    <asp:ListItem>1.1</asp:ListItem>
-                    <asp:ListItem>1.2</asp:ListItem>
-                    <asp:ListItem>2.1</asp:ListItem>
-                    <asp:ListItem>2.2</asp:ListItem>
-                    <asp:ListItem>2.3</asp:ListItem>
-                    <asp:ListItem>2.4</asp:ListItem>
-                    <asp:ListItem>2.5</asp:ListItem>
-                    <asp:ListItem>3.1</asp:ListItem>
-                    <asp:ListItem>3.2</asp:ListItem>
-                    <asp:ListItem>3.3</asp:ListItem>
-                </asp:DropDownList>
-            </p>
-
             <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
 
         </div>
