@@ -47,8 +47,8 @@ public class CCompiler
     /** Native function used to compile; found in TehniciCompilare.dll with the name Compile
     // C function prototype: bool _stdcall Compile ( const char* sourceCode, const char* solutionPath );
      */
-    [DllImportAttribute(@"e:\Programming\Workspace GameDev\Workspace Licenta\Game\Release\TehniciCompilare.dll", EntryPoint = "_Compile", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
-    //[DllImportAttribute(@"TehniciCompilare.dll", EntryPoint = "_Compile", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
+    //[DllImportAttribute(@"e:\Programming\Workspace GameDev\Workspace Licenta\Game\Release\TehniciCompilare.dll", EntryPoint = "_Compile", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
+    [DllImportAttribute(@"TehniciCompilare.dll", EntryPoint = "_Compile", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
     [return: MarshalAs(UnmanagedType.LPStr)]
     private static extern string _Compile(
                                         [MarshalAs(UnmanagedType.LPStr)]
