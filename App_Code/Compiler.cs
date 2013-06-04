@@ -11,6 +11,13 @@ using System.Runtime.InteropServices;
 using System.IO;
 
 
+enum ECompilerStatus
+{
+    ECompilerStatus_InternalFail
+   ,ECompilerStatus_CompileSucceeded
+   ,ECompilerStatus_CompileFailed
+};
+
 public class CCompiler
 {
 	public CCompiler()
@@ -22,9 +29,9 @@ public class CCompiler
      * Main function that we will use to compile the code;
      * !!! TEMP: Currently compileErrors can contain some errros that can occur inside the function from dll; This is active only for debug
      */
-    public static bool Compile( string sourceCode, out string compileErrors )
+    public static bool Compile( string sourceCode, string input, out string output )
     {
-        compileErrors = "";
+        output = "";
 
         // we need the path to the solution that we use to compile 
         // current path is were the web site files are found not the server
@@ -32,15 +39,31 @@ public class CCompiler
         string currPath = HttpRuntime.AppDomainAppPath;
         string solutionPath = currPath + "CompilerDummy\\";
 
-        string compileRezult = _Compile(sourceCode, "3 4" ,solutionPath);
+        string compileRezult = _Compile(sourceCode, input ,solutionPath);
 
-        if (compileRezult != null )
+        
+        Int32 compileStatus = _GetLastCompileStatus();
+
+        if( compileStatus == (Int32)ECompilerStatus.ECompilerStatus_CompileFailed )
         {
-            compileErrors = compileRezult;
+            // codu sursa nu s-a compilat
+            output = compileRezult;
+            return false;
+        }
+        else if (compileStatus == (Int32)ECompilerStatus.ECompilerStatus_CompileSucceeded) 
+        {
+            output = compileRezult;
+            return true;
+        }
+        else
+        {
+            // functia din dll a failat
+            // stringu o sa contina o eroare interna pusa de mine
+            // in caz asta stringu ar trebuii sa fie ceva de genu;
+            output = "Service temporally not available. We have some internal problems";
             return false;
         }
 
-        return true;
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -60,6 +83,11 @@ public class CCompiler
                                     );
 
     //------------------------------------------------------------------------------------------------------------------------------
+    //[DllImportAttribute(@"e:\Programming\Workspace GameDev\Workspace Licenta\Game\Release\TehniciCompilare.dll", EntryPoint = "_GetLastCompileStatus", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
+    [DllImportAttribute(@"TehniciCompilare.dll", EntryPoint = "_GetLastCompileStatus", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
+    private static extern Int32    _GetLastCompileStatus(); // return compiler last status;
+    //------------------------------------------------------------------------------------------------------------------------------
+
 
     [System.Runtime.InteropServices.DllImportAttribute(@"e:\Programming\Workspace GameDev\Workspace Licenta\Game\Release\TehniciCompilare.dll", EntryPoint = "GetTestNumber", CallingConvention = System.Runtime.InteropServices.CallingConvention.StdCall)]
     private static extern int GetTestNumber();
