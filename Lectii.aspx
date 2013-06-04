@@ -141,19 +141,19 @@
                  <a id="Algoritmi"><b>Algoritmi</b></a>
                  <ul>
                      <li> <a href="http://www.ebacalaureat.ro/c/19/129/570/0/Algoritmi" target="_blank">Notiuni generale</a> </li>
-                      <li> <a href="InfoBac/resources/algoritmi.doc">Lectie completa</a> </li>
+                      <li> <a href="./resources/algoritmi.doc">Lectie completa</a> </li>
                  </ul>
                  </br>
                 <a id="Limbajul_c"><b>Elementele de baza ale limbajului C</b></a>
                   <ul>
-                      <li> <a href="InfoBac/resources/Manual_Limbaj_C.doc">Manual Limbaj C</a> </li>
+                      <li> <a href="./resources/Manual_Limbaj_C.doc">Manual Limbaj C</a> </li>
                  </ul>
 
                  <br />
 
                   <a id="Subprograme_predefinite"><b>Subprograme definite de utilizator</b></a>
                   <ul>
-                      <li> <a href="InfoBac/resources/prezentare_subprograme.doc">Prezentare subprograme C 1</a> </li>
+                      <li> <a href="./resources/prezentare_subprograme.doc">Prezentare subprograme C 1</a> </li>
                       <li> <a href="http://infoscience.3x.ro/c++/subprograme.htm" target="_blank">Prezentare subprograme C 2</a> </li>
                  </ul>
                  <br />
@@ -192,7 +192,7 @@
                    <a id="Backtracking"><b>Metoda Backtracking</b></a>
                   <ul>
                       <li> <a href="http://www.tutorialeprogramare.ro/Tutorial%20C/Metoda%20Backtracking.html" target="_blank">Prezentare generala a metodei</a> </li>
-                      <li> <a href="InfoBac/resources/backtracking.doc" target="_blank">Prezentare amanuntita a metodei</a> </li>
+                      <li> <a href="./resources/backtracking.doc" target="_blank">Prezentare amanuntita a metodei</a> </li>
                       <li> <a href="https://sites.google.com/site/metodabacktracking/probleme-rezolvate" target="_blank">MEtoda Backtracking probleme rezolvate</a> </li>
                  </ul>
          <br />
