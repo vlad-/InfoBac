@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 public partial class pages_Home : System.Web.UI.Page
 {
-    static int nrintrebari = 3;
+    static int nrintrebari = 1;
     static int[] chosenkeylist = new int[nrintrebari];
     static Question[] questionlist = new Question[nrintrebari];
     static int[][] choices = new int[nrintrebari][];
@@ -88,11 +88,21 @@ public partial class pages_Home : System.Web.UI.Page
                 Chart2.Series["Raspunsuri Gresite"].Points.Clear();
                 Chart2.ChartAreas.FindByName("ChartArea1").AxisX.Interval = 1;
 
+                double newgrade = 0.0;
+                int gradeno = 0;
                 foreach (KeyValuePair<string, WeightInfo> entry in domainsWeights)
                 {
                     Chart2.Series["Raspunsuri Corecte"].Points.AddY(entry.Value.Number - entry.Value.MistakesNumber);
                     Chart2.Series["Raspunsuri Gresite"].Points.AddXY(entry.Key,entry.Value.MistakesNumber);
+                    if (entry.Value.Number>0){
+                        newgrade += (1.0 + 9.0 * (double)( entry.Value.Number - entry.Value.MistakesNumber )/ (double)entry.Value.Number);
+                    gradeno++;
+                    }
                 }
+
+                newgrade /= gradeno;
+                int trunc = (int)(newgrade * 100);
+                DatabaseManager.SetGrade(userId, (double)trunc*0.01);
 
                 Chart1.Visible = true;
                 Chart2.Visible = true;

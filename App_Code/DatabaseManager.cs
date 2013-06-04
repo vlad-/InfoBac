@@ -8,13 +8,13 @@ using System.Web;
 
 public static class DatabaseManager
 {
-    public const double DefaultDomainWeight = 0;
+    public const double DefaultDomainWeight = 5;
     public const double DefaultQuestionWeight = 5;
 
     private static SqlConnection connection;
     static DatabaseManager()
     {
-        connection = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\Furtuna\Documents\GitHub\InfoBac\App_Data\Database.mdf;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
+        connection = new SqlConnection(@"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\0000IP\InfoBac\App_Data\Database.mdf;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
         connection.Open();
     }
 
@@ -395,5 +395,24 @@ public static class DatabaseManager
         string command = String.Format("update Users set Note = {0} where Id = {1}", grade, userId);
 
         return (ExecuteNonQuerry(command) != 0);
+    }
+
+    public static string GetInput(int programQuestionId)
+    {
+        SqlDataReader rdr = SelectQuerry("select Input from ProgramInput where Id = " + programQuestionId);
+        if (rdr == null)
+            return null;
+        try
+        {
+            if (!rdr.HasRows)
+                return null;
+            rdr.Read();
+            return (string)rdr.GetValue(0);
+        }
+        catch (Exception e)
+        {
+            Logger.WriteError(e.Message);
+            return null;
+        }
     }
 }

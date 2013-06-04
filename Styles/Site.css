@@ -135,6 +135,10 @@ first child of the left and right table columns */
     line-height: 2em;
     font-size: 2em;
 }
+    .header h2
+    {
+        color: #f9f9f9;
+    }
 
 .main
 {

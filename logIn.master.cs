@@ -16,6 +16,7 @@ public partial class Site : System.Web.UI.MasterPage
         }
         else {
             LoginLabel.Text = "Salut, " + Session["userName"].ToString()+" ";
+            Nota.Text = "Nota estimativa: "+ DatabaseManager.GetGrade((int)Session["userId"]).ToString();
         }
     }
     protected void LogOut(object sender, EventArgs e)

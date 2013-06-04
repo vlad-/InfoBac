@@ -62,6 +62,13 @@ public class Question
         get { return m_domain; }
     }
 
+    private string m_link;
+
+    public string Link
+    {
+        get { return m_link; }
+    }
+
     public Question(params Object[] list)
 	{
             m_type = list[1].ToString().Trim();
@@ -72,5 +79,6 @@ public class Question
             m_answer4 = list[6].ToString().Trim();
             m_answer = list[7].ToString().Trim();
             m_domain = list[8].ToString().Trim();
+            m_link = list[9].ToString().Trim();
     }
 }

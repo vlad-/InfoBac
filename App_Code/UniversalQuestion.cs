@@ -10,11 +10,14 @@ public class UniversalQuestion
     protected string domain;
     public Label l;
     public Label fl;
+    public HyperLink fh;
     public UniversalQuestion()
     {
         l = new Label();
         fl = new Label();
         fl.Visible = false;
+        fh = new HyperLink();
+        fh.Visible = false;
     }
     public virtual void display(PlaceHolder p)
     {

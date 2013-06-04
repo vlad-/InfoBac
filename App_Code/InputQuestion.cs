@@ -18,11 +18,22 @@ public class InputQuestion : UniversalQuestion
         base.id = i;
         isProgram = ip;
         t = new TextBox();
+        t.TextMode = TextBoxMode.MultiLine;
+        t.Rows = 4;
         base.l.Text = q.Domain + ") " + q.QuestionText;
         answer = q.Answer;
+        if (q.Link.Length>0)
+        {
+            fh.Text = q.Link;
+            fh.NavigateUrl = "~/Lectii.aspx#" + q.Link;
+        }
+        else
+        {
+            fh.Text = "Lectiile";
+            fh.NavigateUrl = "~/Lectii.aspx";
+        }
         if (isProgram)
         {
-            t.TextMode = TextBoxMode.MultiLine;
             t.Rows = 10;
             pcount++;
         }
@@ -55,8 +66,8 @@ public class InputQuestion : UniversalQuestion
         bool vverify = false;
         if (isProgram)
         {
-            if(CCompiler.Compile("#include<stdlib.h>\n#include<stdio.h>\nint main(){\n"+t.Text+"\nreturn 0;}\n", out programReturn))
-                vverify = answer.Equals(programReturn);
+            if (CCompiler.Compile("#include<stdlib.h>\n#include<stdio.h>\nint main(){\n" + t.Text + "\nreturn 0;}\n",DatabaseManager.GetInput(base.id), out programReturn))
+                    vverify = answer.Equals(programReturn);
             programReturn = programReturn.Replace("\r\n", "<br/>");
         }
         else
@@ -82,8 +93,12 @@ public class InputQuestion : UniversalQuestion
         t.BorderColor = System.Drawing.Color.FromArgb(255, 151, 122);
         base.fl.Visible = true;
         base.fl.ForeColor = System.Drawing.Color.Red;
-        if (!isProgram) base.fl.Text = ("ai raspuns gresit, raspunsul corect era " + ('a'+answer));
-        else base.fl.Text = programReturn;
+        if (!isProgram)
+        {
+            base.fl.Text = ("ai raspuns gresit, raspunsul corect era " + answer + ", mai citeste ");
+        }
+        else base.fl.Text = programReturn+"<br/>mai citeste ";
+        fh.Visible = true;
             
         double newWeight = questionWeightInfo.QuestionWeight * TestLogic.QuestionIncrement;
         if (newWeight > TestLogic.MaxQuestionWeight) { newWeight = TestLogic.MaxQuestionWeight; }
@@ -102,7 +117,7 @@ public class InputQuestion : UniversalQuestion
         p.Controls.Add(new LiteralControl("<br />"));
         p.Controls.Add(t);
         p.Controls.Add(new LiteralControl("<br />"));
-        p.Controls.Add(base.fl);
+        p.Controls.Add(base.fl); p.Controls.Add(base.fh);
         p.Controls.Add(new LiteralControl("<br />"));
         p.Controls.Add(new LiteralControl("<br />"));
     }

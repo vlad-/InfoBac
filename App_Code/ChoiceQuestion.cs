@@ -17,6 +17,16 @@ public class ChoiceQuestion : UniversalQuestion
         rbl = new RadioButtonList();
         count++;
         base.l.Text = q.Domain + ") " + q.QuestionText;
+        if (q.Link.Length>0)
+        {
+            fh.Text = q.Link;
+            fh.NavigateUrl = "~/Lectii.aspx#" + q.Link;
+        }
+        else
+        {
+            fh.Text = "Lectiile";
+            fh.NavigateUrl = "~/Lectii.aspx";
+        }
         String[] s = new String[4];
         s[0] = q.Answer1;
         s[1] = q.Answer2;
@@ -59,7 +69,7 @@ public class ChoiceQuestion : UniversalQuestion
             rbl.Items[rbl.SelectedIndex].Attributes.Add("style", "background-color:#ABFF7A;border:2px solid #72CF5F;");
             base.fl.Visible = true;
             base.fl.ForeColor = System.Drawing.Color.Green;
-            base.fl.Text = ("ai raspuns corect " + rbl.SelectedIndex + "=" + answer);
+            base.fl.Text = ("ai raspuns corect");
         
             DatabaseManager.SetQuestionWeight(user, id, new WeightInfo(DatabaseManager.DefaultQuestionWeight, questionWeightInfo.Number + 1, questionWeightInfo.MistakesNumber, 0));
             newDomainWeight=domainWeightInfo.QuestionWeight*TestLogic.DomainDecrement;
@@ -72,7 +82,8 @@ public class ChoiceQuestion : UniversalQuestion
         rbl.Items[answer].Attributes.Add("style", "border:2px solid #72CF5F;");
         base.fl.Visible = true;
         base.fl.ForeColor = System.Drawing.Color.Red;
-        base.fl.Text = ("ai raspuns gresit " + rbl.SelectedIndex + "!=" + answer);
+        base.fl.Text = ("ai raspuns gresit, raspunsul corect era " + Char.ConvertFromUtf32('a'+answer) + ", mai citeste ");
+        fh.Visible = true;
         
         double newWeight=questionWeightInfo.QuestionWeight*TestLogic.QuestionIncrement;
         if (newWeight>TestLogic.MaxQuestionWeight) {newWeight=TestLogic.MaxQuestionWeight;}
@@ -89,7 +100,7 @@ public class ChoiceQuestion : UniversalQuestion
         p.Controls.Add(base.l);
         p.Controls.Add(new LiteralControl("<br />"));
         p.Controls.Add(rbl);
-        p.Controls.Add(base.fl);
+        p.Controls.Add(base.fl); p.Controls.Add(base.fh);
         p.Controls.Add(new LiteralControl("<br />"));
         p.Controls.Add(new LiteralControl("<br />"));
     }

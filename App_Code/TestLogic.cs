@@ -6,8 +6,8 @@ using System.Web;
 public static class TestLogic
 {
     static Random r = new Random();
-    public const double QuestionIncrement = 1.11;
-    public const double DomainIncrement = 1.09;
+    public const double QuestionIncrement = 1.3;
+    public const double DomainIncrement = 1.5;
     public const double DomainDecrement = 1.0 / DomainIncrement;
     public const double MinDomainWeight = 3.0;
     public const double MaxDomainWeight = 10.0;
@@ -32,7 +32,7 @@ public static class TestLogic
                 return entry.Key;
             }
         }
-        return d.ElementAt(d.Count - 1).Key;
+        return -1;//nu sunt destule intrebari in dictionar
     }
 
     public static int[] FisherYatesShuffle()
