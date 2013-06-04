@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddQuestion.aspx.cs" Inherits="AddQuestion" MasterPageFile="~/logIn.master" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="AddQuestion.aspx.cs" Inherits="AddQuestion" MasterPageFile="~/logIn.master" ValidateRequest="false" %>
 
 <asp:Content ContentPlaceHolderID="MainContent" ID="content" runat="server">
         <div>
@@ -15,9 +15,23 @@
                     <asp:ListItem>3.1</asp:ListItem>
                     <asp:ListItem>3.2</asp:ListItem>
                     <asp:ListItem>3.3</asp:ListItem>
+                    <asp:ListItem>3.4</asp:ListItem>
                 </asp:DropDownList>
             </p>
-
+            <p>
+                Lectia :
+                <asp:DropDownList ID="Lectie" runat="server" AutoPostBack="False">
+                    <asp:ListItem Text="nu stiu / greu de spus" Value="null"></asp:ListItem>
+                    <asp:ListItem Text="pseudocod si algoritmi de baza" Value="Algoritmi"></asp:ListItem>
+                    <asp:ListItem>Limbajul_c</asp:ListItem>
+                    <asp:ListItem>Tablouri</asp:ListItem>
+                    <asp:ListItem>Algoritmi_elementari</asp:ListItem>
+                    <asp:ListItem>Recursivitate</asp:ListItem>
+                    <asp:ListItem>Backtracking</asp:ListItem>
+                    <asp:ListItem>Combinatorica</asp:ListItem>
+                    <asp:ListItem>Grafuri</asp:ListItem>
+                </asp:DropDownList>
+            </p>
             Tip Intrebare : 
 
             <asp:DropDownList ID="questionType" runat="server" AutoPostBack="True">

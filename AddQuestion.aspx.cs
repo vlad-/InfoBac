@@ -63,10 +63,19 @@ public partial class AddQuestion : System.Web.UI.Page
             answer = Answer.Text.Trim();
         }
         String subjet = Subject.SelectedValue;
+        String lectie = Lectie.SelectedValue;
+        String querry;
+        if (lectie.Equals("null"))
+        {
+            //insert type, question, r1, r2, r3, r4, answer
+            querry = String.Format("insert into Questions (Type,Question,Answer1,Answer2,Answer3,Answer4,Answer,Domain) values ('{0}',N'{1}','{2}','{3}','{4}','{5}','{6}','{7}') SELECT IDENT_CURRENT('Questions')", qType, question, r1, r2, r3, r4, answer, subjet);
+        }
+        else {
+            querry = String.Format("insert into Questions (Type,Question,Answer1,Answer2,Answer3,Answer4,Answer,Domain,Link) values ('{0}',N'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}') SELECT IDENT_CURRENT('Questions')", qType, question, r1, r2, r3, r4, answer, subjet,lectie);
+            
+        }
 
-        //insert type, question, r1, r2, r3, r4, answer
-        String querry = String.Format("insert into Questions (Type,Question,Answer1,Answer2,Answer3,Answer4,Answer,Domain) values ('{0}',N'{1}','{2}','{3}','{4}','{5}','{6}','{7}') SELECT IDENT_CURRENT('Questions')", qType, question, r1, r2, r3, r4, answer, subjet);
-        int insertedQuestionId=DatabaseManager.ExecuteScallar(querry);
+        int insertedQuestionId = DatabaseManager.ExecuteScallar(querry);
 
         if (questionType.SelectedValue == "Program")
         {
@@ -74,7 +83,6 @@ public partial class AddQuestion : System.Web.UI.Page
             querry = String.Format("insert into ProgramInput (Id,Input) values ('{0}','{1}')", insertedQuestionId, pi);
             DatabaseManager.ExecuteNonQuerry(querry);
         }
-
         Response.Redirect("AddQuestion.aspx");
     }
 }
